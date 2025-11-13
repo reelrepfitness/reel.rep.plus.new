@@ -1,0 +1,34 @@
+diff --git a/node_modules/expo-glass-effect/ios/GlassContainer.swift b/node_modules/expo-glass-effect/ios/GlassContainer.swift
+index 62ef9db..956a1d6 100644
+--- a/node_modules/expo-glass-effect/ios/GlassContainer.swift
++++ b/node_modules/expo-glass-effect/ios/GlassContainer.swift
+@@ -45,12 +45,3 @@ public final class GlassContainer: ExpoView {
+       }
+     }
+   }
+-
+-  public override func mountChildComponentView(_ childComponentView: UIView, index: Int) {
+-    containerEffectView.contentView.insertSubview(childComponentView, at: index)
+-  }
+-
+-  public override func unmountChildComponentView(_ childComponentView: UIView, index: Int) {
+-    childComponentView.removeFromSuperview()
+-  }
+-}
+diff --git a/node_modules/expo-glass-effect/ios/GlassView.swift b/node_modules/expo-glass-effect/ios/GlassView.swift
+index 9d7fa5b..b323ea7 100644
+--- a/node_modules/expo-glass-effect/ios/GlassView.swift
++++ b/node_modules/expo-glass-effect/ios/GlassView.swift
+@@ -200,11 +200,4 @@ public final class GlassView: ExpoView {
+       #endif
+     }
+   }
+-  public override func mountChildComponentView(_ childComponentView: UIView, index: Int) {
+-    glassEffectView.contentView.insertSubview(childComponentView, at: index)
+-  }
+  
+\ No newline at end of file
+-  public override func unmountChildComponentView(_ childComponentView: UIView, index: Int) {
+-    childComponentView.removeFromSuperview()
+-  }
+-}
