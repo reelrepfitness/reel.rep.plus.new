@@ -6,7 +6,6 @@ import { I18nManager, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider } from "@/contexts/auth";
 import { ToastProvider } from "@/components/ui/toast";
-import * as Updates from "expo-updates";
 import {
   initializeNotifications,
   cleanupNotifications,
@@ -16,10 +15,7 @@ import { enableConnectionMonitoring } from "@/lib/connectionHelper";
 if (!I18nManager.isRTL && Platform.OS !== "web") {
   I18nManager.allowRTL(true);
   I18nManager.forceRTL(true);
-  Updates.reloadAsync().catch((error) => {
-    console.log("[RTL] Could not reload app:", error);
-  });
-}
+  };
 
 SplashScreen.preventAutoHideAsync();
 

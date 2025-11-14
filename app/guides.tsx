@@ -10,14 +10,14 @@ import {
 } from "react-native";
 import { Stack, router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { 
+import {
   ChevronLeft,
   ChevronRight,
-  BookOpen, 
-  Utensils, 
-  Calendar, 
-  Plane, 
-  Activity, 
+  BookOpen,
+  Utensils,
+  Calendar,
+  Plane,
+  Activity,
   Sun,
   CheckCircle2,
   CircleDot,
@@ -31,7 +31,7 @@ import {
   Fish,
   Wheat,
   Candy,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "@/constants/colors";
@@ -40,11 +40,11 @@ import { supabase } from "@/lib/supabase";
 import { Guide } from "@/lib/types";
 import { useState, ReactElement, useEffect, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { isRTL } from '@/lib/utils';
+import { createLogger } from "@/lib/logger";
 
-import { createLogger } from '@/lib/logger';
-
-const logger = createLogger('Guides');
+const logger = createLogger("Guides");
+const RTL_MARK = "\u200F"; // Right-to-Left mark
+const STRIP_BIDI_REGEX = /[\u200E\u200F\u202A-\u202E]/g;
 
 export default function GuidesScreen() {
   const insets = useSafeAreaInsets();
@@ -69,10 +69,12 @@ export default function GuidesScreen() {
       }
 
       const guidesData = data as Guide[];
-      
-      const importantGuideTitle = "דגשים חשובים להתנהלות היומית";
-      const importantIndex = guidesData.findIndex(g => g.title.includes("דגשים") && g.title.includes("חשובים"));
-      
+
+      const importantIndex = guidesData.findIndex(
+        (g) =>
+          g.title.includes("דגשים") && g.title.includes("חשובים")
+      );
+
       if (importantIndex > 0) {
         const [important] = guidesData.splice(importantIndex, 1);
         guidesData.unshift(important);
@@ -85,9 +87,14 @@ export default function GuidesScreen() {
   useEffect(() => {
     const checkFirstTime = async () => {
       try {
-        const hasAcknowledged = await AsyncStorage.getItem("important_guide_acknowledged");
+        const hasAcknowledged = await AsyncStorage.getItem(
+          "important_guide_acknowledged"
+        );
         if (!hasAcknowledged && guides && guides.length > 0) {
-          const important = guides.find(g => g.title.includes("דגשים") && g.title.includes("חשובים"));
+          const important = guides.find(
+            (g) =>
+              g.title.includes("דגשים") && g.title.includes("חשובים")
+          );
           if (important) {
             setImportantGuide(important);
             setShowImportantGuideModal(true);
@@ -116,7 +123,7 @@ export default function GuidesScreen() {
         }),
       ])
     ).start();
-  }, []);
+  }, [pulseAnim]);
 
   useEffect(() => {
     if (guides && guides.length > 0 && !selectedGuide) {
@@ -175,7 +182,7 @@ export default function GuidesScreen() {
 
   const getIconForGuide = (title: string, emoji: string | null) => {
     const lowerTitle = title.toLowerCase();
-    
+
     if (lowerTitle.includes("חופש") || lowerTitle.includes("טיס")) {
       return <Plane color={colors.primary} size={32} />;
     }
@@ -191,7 +198,7 @@ export default function GuidesScreen() {
     if (lowerTitle.includes("יומ") || lowerTitle.includes("התנהלות")) {
       return <Sun color={colors.primary} size={32} />;
     }
-    
+
     return <BookOpen color={colors.primary} size={32} />;
   };
 
@@ -227,63 +234,91 @@ export default function GuidesScreen() {
 
   const getIconForEmoji = (emoji: string): ReactElement | null => {
     const iconMap: { [key: string]: ReactElement } = {
-      '✅': <CheckCircle2 color="#10B981" size={16} />,
-      '🔹': <CircleDot color={colors.primary} size={16} />,
-      '🔺': <TrendingUp color="#EF4444" size={16} />,
-      '‼️': <AlertCircle color="#F59E0B" size={16} />,
-      '💢': <AlertCircle color="#EF4444" size={16} />,
-      '🟢': <CheckCircle2 color="#10B981" size={16} />,
-      '⚠️': <AlertCircle color="#F59E0B" size={16} />,
-      '❌': <XCircle color="#EF4444" size={16} />,
-      '💧': <Droplets color="#3B82F6" size={16} />,
-      '☕': <Coffee color="#78350F" size={16} />,
-      '🔥': <Flame color="#F97316" size={16} />,
-      '🍎': <Apple color="#EF4444" size={16} />,
-      '🐟': <Fish color="#3B82F6" size={16} />,
-      '🌾': <Wheat color="#F59E0B" size={16} />,
-      '🍬': <Candy color="#EC4899" size={16} />,
+      "✅": <CheckCircle2 color="#10B981" size={16} />,
+      "🔹": <CircleDot color={colors.primary} size={16} />,
+      "🔺": <TrendingUp color="#EF4444" size={16} />,
+      "‼️": <AlertCircle color="#F59E0B" size={16} />,
+      "💢": <AlertCircle color="#EF4444" size={16} />,
+      "🟢": <CheckCircle2 color="#10B981" size={16} />,
+      "⚠️": <AlertCircle color="#F59E0B" size={16} />,
+      "❌": <XCircle color="#EF4444" size={16} />,
+      "💧": <Droplets color="#3B82F6" size={16} />,
+      "☕": <Coffee color="#78350F" size={16} />,
+      "🔥": <Flame color="#F97316" size={16} />,
+      "🍎": <Apple color="#EF4444" size={16} />,
+      "🐟": <Fish color="#3B82F6" size={16} />,
+      "🌾": <Wheat color="#F59E0B" size={16} />,
+      "🍬": <Candy color="#EC4899" size={16} />,
     };
     return iconMap[emoji] || null;
   };
 
   const removeEmojis = (text: string) => {
-    return text.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F1E0}-\u{1F1FF}\u{E0020}-\u{E007F}\u{200D}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu, '').trim();
+    const noEmojis = text.replace(
+      /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F1E0}-\u{1F1FF}\u{E0020}-\u{E007F}\u{200D}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu,
+      ""
+    );
+  
+    return noEmojis.replace(STRIP_BIDI_REGEX, "").trim();
   };
+  
 
   const getIconsFromLine = (line: string) => {
-    const emojis = ['✅', '🔹', '🔺', '‼️', '💢', '🟢', '⚠️', '❌', '💧', '☕', '🔥', '🍎', '🐟', '🌾', '🍬'];
+    const emojis = [
+      "✅",
+      "🔹",
+      "🔺",
+      "‼️",
+      "💢",
+      "🟢",
+      "⚠️",
+      "❌",
+      "💧",
+      "☕",
+      "🔥",
+      "🍎",
+      "🐟",
+      "🌾",
+      "🍬",
+    ];
     const foundEmojis: string[] = [];
-    
-    emojis.forEach(emoji => {
+
+    emojis.forEach((emoji) => {
       if (line.includes(emoji)) {
         foundEmojis.push(emoji);
       }
     });
-    
+
     return foundEmojis;
   };
 
   const renderContent = (content: string) => {
-    const lines = content.split('\n');
+    const lines = content.split("\n");
+  
     return lines.map((line, index) => {
       const trimmedLine = line.trim();
-      
-      const isHeader = (
-        (trimmedLine.startsWith('✅') || trimmedLine.startsWith('🔹') || 
-         trimmedLine.startsWith('‼️') || trimmedLine.startsWith('💢') ||
-         trimmedLine.startsWith('🟢')) &&
-        (trimmedLine.endsWith('✅') || trimmedLine.endsWith('🟢') || trimmedLine.endsWith('‼️'))
-      ) || (
-        trimmedLine.endsWith(':') && !trimmedLine.includes('לדוגמה')
-      );
-
+  
+      const isHeader =
+        ((trimmedLine.startsWith("✅") ||
+          trimmedLine.startsWith("🔹") ||
+          trimmedLine.startsWith("‼️") ||
+          trimmedLine.startsWith("💢") ||
+          trimmedLine.startsWith("🟢")) &&
+          (trimmedLine.endsWith("✅") ||
+            trimmedLine.endsWith("🟢") ||
+            trimmedLine.endsWith("‼️"))) ||
+        (trimmedLine.endsWith(":") && !trimmedLine.includes("לדוגמה"));
+  
       if (!trimmedLine) {
         return <View key={index} style={{ height: 10 }} />;
       }
-
+  
       const emojisInLine = getIconsFromLine(line);
       const cleanedLine = removeEmojis(line);
-
+  
+      // מוסיפים סימן RTL בתחילת השורה, כדי לכפות כיוון ימין-לשמאל
+      const normalizedLine = `${RTL_MARK}${cleanedLine}`;
+  
       return (
         <View key={index} style={styles.contentLineContainer}>
           <View style={styles.contentTextWrapper}>
@@ -299,7 +334,7 @@ export default function GuidesScreen() {
                   isHeader && styles.contentHeader,
                 ]}
               >
-                {cleanedLine}
+                {normalizedLine}
               </Text>
             </View>
           </View>
@@ -307,6 +342,7 @@ export default function GuidesScreen() {
       );
     });
   };
+  
 
   if (selectedGuide) {
     return (
@@ -316,20 +352,26 @@ export default function GuidesScreen() {
         style={styles.container}
       >
         <Stack.Screen options={{ headerShown: false }} />
-        <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
+        <View
+          style={[
+            styles.header,
+            { paddingTop: insets.top + 16 },
+          ]}
+        >
           <View style={{ width: 40 }} />
           <Text style={styles.headerTitle}>{selectedGuide.title}</Text>
-          <TouchableOpacity
-            onPress={handleBack}
-            style={styles.backButton}
-          >
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
             <ChevronRight color={colors.white} size={24} />
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.detailContent}
+        >
           <View style={styles.detailIconContainer}>
             {getIconForGuide(selectedGuide.title, selectedGuide.emoji)}
           </View>
+
           {selectedGuide.short_description && (
             <View style={styles.descriptionCard}>
               <Text style={styles.guideDescription}>
@@ -337,6 +379,7 @@ export default function GuidesScreen() {
               </Text>
             </View>
           )}
+
           <View style={styles.contentCard}>
             {renderContent(selectedGuide.content)}
           </View>
@@ -352,7 +395,12 @@ export default function GuidesScreen() {
       style={styles.container}
     >
       <Stack.Screen options={{ headerShown: false }} />
-      <View style={[styles.customHeader, { paddingTop: insets.top }]}>
+      <View
+        style={[
+          styles.customHeader,
+          { paddingTop: insets.top },
+        ]}
+      >
         <View style={styles.headerRow1}>
           <View style={styles.backButtonNew} />
           <BookOpen color={colors.white} size={28} />
@@ -364,11 +412,16 @@ export default function GuidesScreen() {
           <Text style={styles.customHeaderTitle}>מדריכים</Text>
         </View>
       </View>
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+      >
         {guides && guides.length > 0 ? (
           guides.map((guide, index) => {
-            const isImportant = guide.title.includes("דגשים") && guide.title.includes("חשובים");
-            
+            const isImportant =
+              guide.title.includes("דגשים") &&
+              guide.title.includes("חשובים");
+
             if (isImportant) {
               return (
                 <Animated.View
@@ -377,7 +430,7 @@ export default function GuidesScreen() {
                     opacity: fadeAnims.current[index] || 1,
                     transform: [
                       { translateY: slideAnims.current[index] || 0 },
-                      { scale: pulseAnim }
+                      { scale: pulseAnim },
                     ],
                   }}
                 >
@@ -392,29 +445,27 @@ export default function GuidesScreen() {
                       style={styles.importantGradient}
                     >
                       <View style={styles.importantBadge}>
-                        <Text style={styles.importantBadgeText}>חשוב במיוחד</Text>
+                        <Text style={styles.importantBadgeText}>
+                          חשוב במיוחד
+                        </Text>
                         <AlertCircle color="#FFF" size={20} />
                       </View>
                       <View style={styles.importantContent}>
-                        {/* Arrow on LEFT */}
                         <ChevronLeft color={colors.white} size={24} />
-                        
-                        {/* Icon + Text grouped together on RIGHT */}
                         <View style={styles.importantContentGroup}>
                           <View style={styles.guideInfo}>
                             <Text style={styles.importantGuideTitle}>
                               {guide.title}
                             </Text>
                             {guide.short_description && (
-                              <Text 
-                                style={styles.importantGuideDescription} 
+                              <Text
+                                style={styles.importantGuideDescription}
                                 numberOfLines={2}
                               >
                                 {guide.short_description}
                               </Text>
                             )}
                           </View>
-                          
                           <View style={styles.importantIconContainer}>
                             {getIconForGuide(guide.title, guide.emoji)}
                           </View>
@@ -425,7 +476,7 @@ export default function GuidesScreen() {
                 </Animated.View>
               );
             }
-            
+
             return (
               <Animated.View
                 key={guide.guide_id}
@@ -438,25 +489,19 @@ export default function GuidesScreen() {
                   style={styles.guideCard}
                   onPress={() => setSelectedGuide(guide)}
                 >
-                  {/* Arrow on LEFT */}
                   <ChevronLeft color={colors.gray} size={20} />
-                  
-                  {/* Icon + Text grouped together on RIGHT */}
                   <View style={styles.guideContentGroup}>
                     <View style={styles.guideInfo}>
-                      <Text style={styles.guideTitle}>
-                        {guide.title}
-                      </Text>
+                      <Text style={styles.guideTitle}>{guide.title}</Text>
                       {guide.short_description && (
-                        <Text 
-                          style={styles.guideDescriptionShort} 
+                        <Text
+                          style={styles.guideDescriptionShort}
                           numberOfLines={2}
                         >
                           {guide.short_description}
                         </Text>
                       )}
                     </View>
-                    
                     <View style={styles.guideIconContainer}>
                       {getIconForGuide(guide.title, guide.emoji)}
                     </View>
@@ -472,10 +517,11 @@ export default function GuidesScreen() {
           </View>
         )}
       </ScrollView>
+
       <Modal
         visible={showImportantGuideModal}
         animationType="fade"
-        transparent={true}
+        transparent
         onRequestClose={handleDismissModal}
       >
         <View style={styles.modalOverlay}>
@@ -495,7 +541,8 @@ export default function GuidesScreen() {
               </Text>
               <Text style={styles.modalSubtext}>
                 מדריך זה מכיל מידע חיוני להתנהלות היומית שלך.
-מומלץ לקרוא לפני השימוש באפליקציה.
+                {"\n"}
+                מומלץ לקרוא לפני השימוש באפליקציה.
               </Text>
               <TouchableOpacity
                 style={styles.modalPrimaryButton}
@@ -507,7 +554,9 @@ export default function GuidesScreen() {
                 style={styles.modalSecondaryButton}
                 onPress={handleDismissModal}
               >
-                <Text style={styles.modalSecondaryButtonText}>אקרא מאוחר יותר</Text>
+                <Text style={styles.modalSecondaryButtonText}>
+                  אקרא מאוחר יותר
+                </Text>
               </TouchableOpacity>
             </LinearGradient>
           </View>
@@ -520,7 +569,7 @@ export default function GuidesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    direction: 'rtl' as const,
+    direction: "rtl" as const,
   },
   header: {
     flexDirection: "row-reverse",
@@ -541,7 +590,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700" as const,
     color: colors.white,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   customHeader: {
     backgroundColor: "#000000",
@@ -577,13 +627,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700" as const,
     color: colors.white,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   scrollView: {
     flex: 1,
   },
   content: {
     padding: 16,
+  },
+  detailContent: {
+    padding: 16,
+    direction: "rtl" as const,
+    writingDirection: "rtl" as const,
   },
   loadingContainer: {
     flex: 1,
@@ -599,7 +655,7 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     color: colors.white,
-    textAlign: 'right' as const,
+    textAlign: "right",
   },
   guideCard: {
     backgroundColor: colors.white,
@@ -614,9 +670,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
-  },
-  guideCardEmoji: {
-    fontSize: 32,
   },
   guideIconContainer: {
     width: 80,
@@ -640,14 +693,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700" as const,
     color: colors.text,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   guideDescriptionShort: {
     fontSize: 14,
     color: "#666",
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
-
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
@@ -658,7 +712,8 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     color: colors.gray,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   detailIconContainer: {
     width: 80,
@@ -683,7 +738,8 @@ const styles = StyleSheet.create({
     color: "#333",
     lineHeight: 26,
     fontWeight: "600" as const,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   contentCard: {
     backgroundColor: colors.white,
@@ -694,25 +750,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
+    direction: "rtl" as const,
+    writingDirection: "rtl" as const,
   },
   contentLine: {
     fontSize: 15,
     color: colors.text,
     lineHeight: 26,
     marginBottom: 4,
-    textAlign: 'right',
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   contentHeader: {
     fontSize: 17,
     fontWeight: "700" as const,
     marginTop: 8,
     marginBottom: 8,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   contentLineContainer: {
     marginBottom: 4,
   },
   contentTextWrapper: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "flex-start",
     gap: 8,
   },
@@ -748,7 +809,8 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 14,
     fontWeight: "700" as const,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   importantContent: {
     flexDirection: "row-reverse",
@@ -766,12 +828,14 @@ const styles = StyleSheet.create({
     fontWeight: "700" as const,
     color: colors.white,
     marginBottom: 4,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   importantGuideDescription: {
     fontSize: 15,
     color: "rgba(255, 255, 255, 0.9)",
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   importantIconContainer: {
     width: 80,
@@ -817,21 +881,22 @@ const styles = StyleSheet.create({
     fontWeight: "700" as const,
     color: colors.white,
     marginBottom: 12,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   modalDescription: {
     fontSize: 18,
     fontWeight: "600" as const,
     color: colors.white,
     marginBottom: 16,
-    textAlign: 'right' as const,
+    textAlign: "right",
     writingDirection: "rtl" as const,
   },
   modalSubtext: {
     fontSize: 15,
     color: "rgba(255, 255, 255, 0.9)",
     marginBottom: 32,
-    textAlign: 'right' as const,
+    textAlign: "right",
     lineHeight: 24,
     writingDirection: "rtl" as const,
   },
@@ -852,7 +917,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700" as const,
     color: "#FFA500",
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
   modalSecondaryButton: {
     backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -865,6 +931,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600" as const,
     color: colors.white,
-    textAlign: 'right' as const,
+    textAlign: "right",
+    writingDirection: "rtl" as const,
   },
 });

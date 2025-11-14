@@ -1,7 +1,7 @@
-import { I18nManager } from "react-native";
+import { I18nManager as RNManager } from "react-native";
 import { FoodConversions, MeasureType, CATEGORY_KCAL_PER_UNIT } from "./types";
 
-export const isRTL = true; 
+export const isRTL = RNManager.isRTL;
 
 export function roundToHalf(value: number): number {
   return Math.round(value * 2) / 2;
