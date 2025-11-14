@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image, Platform, Animated, TextInput, Modal, InputAccessoryView, Keyboard } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image, Platform, Animated, TextInput, Modal, InputAccessoryView, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { Droplets, ChevronLeft, CupSoda, X, Plus, Trash2 } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -770,33 +770,32 @@ export default function HomeScreen() {
             setShowStrengthSheet(false);
           }}
         >
-          <TouchableOpacity
-            style={styles.modalOverlay}
-            activeOpacity={1}
+          <TouchableWithoutFeedback
             onPress={() => {
               Keyboard.dismiss();
               setShowStrengthSheet(false);
             }}
           >
-            <TouchableOpacity
-              style={[styles.bottomSheet, { paddingBottom: insets.bottom + 20 }]}
-              activeOpacity={1}
-              onPress={(e) => e.stopPropagation()}
-            >
-              <View style={styles.sheetHandle} />
-              
-              <View style={styles.sheetHeader}>
-                <TouchableOpacity onPress={() => {
-                  Keyboard.dismiss();
-                  setShowStrengthSheet(false);
-                }}>
-                  <X size={24} color="#000" />
-                </TouchableOpacity>
-                <Text style={styles.sheetTitle}>רישום אימון כוח</Text>
-                <View style={{ width: 24 }} />
-              </View>
-              
-              <View style={styles.sheetContent}>
+            <View style={styles.modalOverlay}>
+              <TouchableWithoutFeedback onPress={() => {}}>
+                <KeyboardAvoidingView
+                  behavior={Platform.OS === "ios" ? "padding" : "height"}
+                  style={[styles.bottomSheet, { paddingBottom: insets.bottom + 20 }]}
+                >
+                  <View style={styles.sheetHandle} />
+
+                  <View style={styles.sheetHeader}>
+                    <TouchableOpacity onPress={() => {
+                      Keyboard.dismiss();
+                      setShowStrengthSheet(false);
+                    }}>
+                      <X size={24} color="#000" />
+                    </TouchableOpacity>
+                    <Text style={styles.sheetTitle}>רישום אימון כוח</Text>
+                    <View style={{ width: 24 }} />
+                  </View>
+
+                  <View style={styles.sheetContent}>
                 <View style={styles.inputGroup}>
                   <Text style={styles.inputLabel}>תאריך</Text>
                   <View style={styles.weekStripContainer}>
@@ -843,10 +842,13 @@ export default function HomeScreen() {
                     onChangeText={setWorkoutAmount}
                     keyboardType="numeric"
                     placeholder="הזן מספר"
+                    placeholderTextColor="#9CA3AF"
                     returnKeyType="done"
                     blurOnSubmit={true}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     inputAccessoryViewID="strengthWorkoutDone"
+                    textAlign="right"
+                    writingDirection="rtl"
                   />
                 </View>
                 
@@ -874,20 +876,22 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </View>
               
-              {Platform.OS === 'ios' && (
-                <InputAccessoryView nativeID="strengthWorkoutDone">
-                  <View style={styles.keyboardAccessory}>
-                    <TouchableOpacity 
-                      style={styles.keyboardDoneButton}
-                      onPress={() => Keyboard.dismiss()}
-                    >
-                      <Text style={styles.keyboardDoneText}>סיים</Text>
-                    </TouchableOpacity>
-                  </View>
-                </InputAccessoryView>
-              )}
-            </TouchableOpacity>
-          </TouchableOpacity>
+                  {Platform.OS === 'ios' && (
+                    <InputAccessoryView nativeID="strengthWorkoutDone">
+                      <View style={styles.keyboardAccessory}>
+                        <TouchableOpacity
+                          style={styles.keyboardDoneButton}
+                          onPress={() => Keyboard.dismiss()}
+                        >
+                          <Text style={styles.keyboardDoneText}>סיים</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </InputAccessoryView>
+                  )}
+                </KeyboardAvoidingView>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
         </Modal>
         
         <Modal
@@ -899,33 +903,32 @@ export default function HomeScreen() {
             setShowCardioSheet(false);
           }}
         >
-          <TouchableOpacity
-            style={styles.modalOverlay}
-            activeOpacity={1}
+          <TouchableWithoutFeedback
             onPress={() => {
               Keyboard.dismiss();
               setShowCardioSheet(false);
             }}
           >
-            <TouchableOpacity
-              style={[styles.bottomSheet, { paddingBottom: insets.bottom + 20 }]}
-              activeOpacity={1}
-              onPress={(e) => e.stopPropagation()}
-            >
-              <View style={styles.sheetHandle} />
-              
-              <View style={styles.sheetHeader}>
-                <TouchableOpacity onPress={() => {
-                  Keyboard.dismiss();
-                  setShowCardioSheet(false);
-                }}>
-                  <X size={24} color="#000" />
-                </TouchableOpacity>
-                <Text style={styles.sheetTitle}>רישום אירובי</Text>
-                <View style={{ width: 24 }} />
-              </View>
-              
-              <View style={styles.sheetContent}>
+            <View style={styles.modalOverlay}>
+              <TouchableWithoutFeedback onPress={() => {}}>
+                <KeyboardAvoidingView
+                  behavior={Platform.OS === "ios" ? "padding" : "height"}
+                  style={[styles.bottomSheet, { paddingBottom: insets.bottom + 20 }]}
+                >
+                  <View style={styles.sheetHandle} />
+
+                  <View style={styles.sheetHeader}>
+                    <TouchableOpacity onPress={() => {
+                      Keyboard.dismiss();
+                      setShowCardioSheet(false);
+                    }}>
+                      <X size={24} color="#000" />
+                    </TouchableOpacity>
+                    <Text style={styles.sheetTitle}>רישום אירובי</Text>
+                    <View style={{ width: 24 }} />
+                  </View>
+
+                  <View style={styles.sheetContent}>
                 <View style={styles.inputGroup}>
                   <Text style={styles.inputLabel}>תאריך</Text>
                   <View style={styles.weekStripContainer}>
@@ -972,10 +975,13 @@ export default function HomeScreen() {
                     onChangeText={setWorkoutAmount}
                     keyboardType="numeric"
                     placeholder="הזן מספר דקות"
+                    placeholderTextColor="#9CA3AF"
                     returnKeyType="done"
                     blurOnSubmit={true}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     inputAccessoryViewID="cardioWorkoutDone"
+                    textAlign="right"
+                    writingDirection="rtl"
                   />
                 </View>
                 
@@ -1003,20 +1009,22 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </View>
               
-              {Platform.OS === 'ios' && (
-                <InputAccessoryView nativeID="cardioWorkoutDone">
-                  <View style={styles.keyboardAccessory}>
-                    <TouchableOpacity 
-                      style={styles.keyboardDoneButton}
-                      onPress={() => Keyboard.dismiss()}
-                    >
-                      <Text style={styles.keyboardDoneText}>סגור</Text>
-                    </TouchableOpacity>
-                  </View>
-                </InputAccessoryView>
-              )}
-            </TouchableOpacity>
-          </TouchableOpacity>
+                  {Platform.OS === 'ios' && (
+                    <InputAccessoryView nativeID="cardioWorkoutDone">
+                      <View style={styles.keyboardAccessory}>
+                        <TouchableOpacity
+                          style={styles.keyboardDoneButton}
+                          onPress={() => Keyboard.dismiss()}
+                        >
+                          <Text style={styles.keyboardDoneText}>סגור</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </InputAccessoryView>
+                  )}
+                </KeyboardAvoidingView>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
         </Modal>
       </ScrollView>
     </View>

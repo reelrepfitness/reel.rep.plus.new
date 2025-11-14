@@ -43,8 +43,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createLogger } from "@/lib/logger";
 
 const logger = createLogger("Guides");
-const RTL_MARK = "\u200F"; // Right-to-Left mark
-const STRIP_BIDI_REGEX = /[\u200E\u200F\u202A-\u202E]/g;
 
 export default function GuidesScreen() {
   const insets = useSafeAreaInsets();
@@ -254,12 +252,10 @@ export default function GuidesScreen() {
   };
 
   const removeEmojis = (text: string) => {
-    const noEmojis = text.replace(
+    return text.replace(
       /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F1E0}-\u{1F1FF}\u{E0020}-\u{E007F}\u{200D}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu,
       ""
-    );
-  
-    return noEmojis.replace(STRIP_BIDI_REGEX, "").trim();
+    ).trim();
   };
   
 
@@ -294,53 +290,44 @@ export default function GuidesScreen() {
 
   const renderContent = (content: string) => {
     const lines = content.split("\n");
-  
-    return lines.map((line, index) => {
-      const trimmedLine = line.trim();
-  
-      const isHeader =
-        ((trimmedLine.startsWith("✅") ||
-          trimmedLine.startsWith("🔹") ||
-          trimmedLine.startsWith("‼️") ||
-          trimmedLine.startsWith("💢") ||
-          trimmedLine.startsWith("🟢")) &&
-          (trimmedLine.endsWith("✅") ||
-            trimmedLine.endsWith("🟢") ||
-            trimmedLine.endsWith("‼️"))) ||
-        (trimmedLine.endsWith(":") && !trimmedLine.includes("לדוגמה"));
-  
-      if (!trimmedLine) {
-        return <View key={index} style={{ height: 10 }} />;
-      }
-  
-      const emojisInLine = getIconsFromLine(line);
-      const cleanedLine = removeEmojis(line);
-  
-      // מוסיפים סימן RTL בתחילת השורה, כדי לכפות כיוון ימין-לשמאל
-      const normalizedLine = `${RTL_MARK}${cleanedLine}`;
-  
-      return (
-        <View key={index} style={styles.contentLineContainer}>
-          <View style={styles.contentTextWrapper}>
-            {emojisInLine.map((emoji, emojiIndex) => (
-              <View key={emojiIndex} style={styles.iconWrapper}>
-                {getIconForEmoji(emoji)}
+
+    return (
+      <View>
+        {lines.map((line, index) => {
+          const trimmed = line.trim();
+          if (!trimmed) {
+            return <View key={index} style={{ height: 8 }} />;
+          }
+
+          const emojis = getIconsFromLine(trimmed);
+          const cleanedText = removeEmojis(trimmed);
+          const isHeader = cleanedText.endsWith(":");
+
+          return (
+            <View key={index} style={styles.contentLineContainer}>
+              <View style={styles.contentTextWrapper}>
+                {emojis.length > 0 && (
+                  <View style={styles.iconWrapper}>
+                    {emojis.map((emoji, i) => (
+                      <View key={i}>{getIconForEmoji(emoji)}</View>
+                    ))}
+                  </View>
+                )}
+
+                <Text
+                  style={[
+                    styles.contentLine,
+                    isHeader ? styles.contentHeader : null,
+                  ]}
+                >
+                  {cleanedText}
+                </Text>
               </View>
-            ))}
-            <View style={{ flex: 1 }}>
-              <Text
-                style={[
-                  styles.contentLine,
-                  isHeader && styles.contentHeader,
-                ]}
-              >
-                {normalizedLine}
-              </Text>
             </View>
-          </View>
-        </View>
-      );
-    });
+          );
+        })}
+      </View>
+    );
   };
   
 
@@ -569,7 +556,6 @@ export default function GuidesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    direction: "rtl" as const,
   },
   header: {
     flexDirection: "row-reverse",
@@ -638,8 +624,6 @@ const styles = StyleSheet.create({
   },
   detailContent: {
     padding: 16,
-    direction: "rtl" as const,
-    writingDirection: "rtl" as const,
   },
   loadingContainer: {
     flex: 1,
@@ -750,8 +734,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
-    direction: "rtl" as const,
-    writingDirection: "rtl" as const,
+    alignItems: "flex-end",
   },
   contentLine: {
     fontSize: 15,
@@ -766,8 +749,6 @@ const styles = StyleSheet.create({
     fontWeight: "700" as const,
     marginTop: 8,
     marginBottom: 8,
-    textAlign: "right",
-    writingDirection: "rtl" as const,
   },
   contentLineContainer: {
     marginBottom: 4,
