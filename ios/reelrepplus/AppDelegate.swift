@@ -27,14 +27,12 @@ public class AppDelegate: ExpoAppDelegate {
       withModuleName: "main",
       in: window,
       launchOptions: launchOptions)
-    
-    // Enable RTL support
-RCTI18nUtil.sharedInstance().allowRTL(true)
 #endif
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
+  // Linking API
   public override func application(
     _ app: UIApplication,
     open url: URL,
@@ -43,6 +41,7 @@ RCTI18nUtil.sharedInstance().allowRTL(true)
     return super.application(app, open: url, options: options) || RCTLinkingManager.application(app, open: url, options: options)
   }
 
+  // Universal Links
   public override func application(
     _ application: UIApplication,
     continue userActivity: NSUserActivity,
@@ -54,7 +53,10 @@ RCTI18nUtil.sharedInstance().allowRTL(true)
 }
 
 class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
+  // Extension point for config-plugins
+
   override func sourceURL(for bridge: RCTBridge) -> URL? {
+    // needed to return the correct URL for expo-dev-client.
     bridge.bundleURL ?? bundleURL()
   }
 

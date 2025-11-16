@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "reelrepplus",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
@@ -39,8 +39,6 @@
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "android.permission.RECEIVE_BOOT_COMPLETED",
-        "android.permission/SCHEDULE_EXACT_ALARM",
-        "android.permission/REQUEST_INSTALL_PACKAGES",
         "android.permission.SCHEDULE_EXACT_ALARM",
         "android.permission.REQUEST_INSTALL_PACKAGES"
       ]
@@ -53,6 +51,14 @@
         "expo-router",
         {
           "origin": "https://rork.com/"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useModularHeaders": true
+          }
         }
       ],
       "expo-font",
@@ -93,7 +99,7 @@
       "assetPatternsToBeBundled": [],
       "disableAntiBrickingMeasures": false
     },
-    "runtimeVersion":"1.0.0",
+    "runtimeVersion": "1.0.0",
     "extra": {
       "router": {
         "origin": "https://rork.com/"
