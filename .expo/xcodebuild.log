@@ -1,0 +1,89 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios/reelrepplus.xcodeproj -configuration Debug -scheme reelrepplus -destination id=3AFA14BB-E734-496B-8B49-FF557B7044A1 DEVELOPMENT_TEAM=Z6G924A74U -allowProvisioningUpdates -allowProvisioningDeviceRegistration
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = Z6G924A74U
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'reelrepplus' in project 'reelrepplus' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios/reelrepplus/Images.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 128b3d5114ce8292e45dd43fae715ee0
+Build description path: /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/XCBuildData/128b3d5114ce8292e45dd43fae715ee0.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk /Users/ivanzaits/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.1-23B77-90cf18a4295e390e64c810bc6bd7acbc.sdkstatcache
+    cd /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios/reelrepplus.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk -o /Users/ivanzaits/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.1-23B77-90cf18a4295e390e64c810bc6bd7acbc.sdkstatcache
+Base directory status changed. Regenerating...
+
+ProcessProductPackaging /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios/reelrepplus/reelrepplus.entitlements /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app.xcent (in target 'reelrepplus' from project 'reelrepplus')
+    cd /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios
+    
+    Entitlements:
+    
+    {
+}
+    
+    builtin-productPackagingUtility /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios/reelrepplus/reelrepplus.entitlements -entitlements -format xml -o /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app.xcent
+
+ProcessProductPackaging /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios/reelrepplus/reelrepplus.entitlements /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app-Simulated.xcent (in target 'reelrepplus' from project 'reelrepplus')
+    cd /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "Z6G924A74U.com.reelrepplus.ios";
+    "aps-environment" = development;
+    "com.apple.developer.applesignin" =     (
+        Default
+    );
+    "com.apple.developer.associated-domains" =     (
+        "applinks:reelrepplus.com"
+    );
+}
+    
+    builtin-productPackagingUtility /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios/reelrepplus/reelrepplus.entitlements -entitlements -format xml -o /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app-Simulated.xcent
+
+ProcessProductPackagingDER /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app.xcent /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app.xcent.der (in target 'reelrepplus' from project 'reelrepplus')
+    cd /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios
+    /usr/bin/derq query -f xml -i /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app.xcent -o /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app.xcent.der --raw
+
+ProcessProductPackagingDER /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app-Simulated.xcent /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app-Simulated.xcent.der (in target 'reelrepplus' from project 'reelrepplus')
+    cd /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios
+    /usr/bin/derq query -f xml -i /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app-Simulated.xcent -o /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/reelrepplus.app-Simulated.xcent.der --raw
+
+PhaseScriptExecution [CP]\ Check\ Pods\ Manifest.lock /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/Script-08A4A3CD28434E44B6B9DE2E.sh (in target 'reelrepplus' from project 'reelrepplus')
+    cd /Users/ivanzaits/Documents/apps/reel.rep.plus.new/ios
+    /bin/sh -c /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/Script-08A4A3CD28434E44B6B9DE2E.sh
+diff: /Podfile.lock: No such file or directory
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+
+note: Run script build phase 'Bundle React Native code and images' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'reelrepplus' from project 'reelrepplus')

@@ -1,0 +1,7 @@
+** BUILD FAILED **
+
+
+The following build commands failed:
+	PhaseScriptExecution [CP]\ Check\ Pods\ Manifest.lock /Users/ivanzaits/Library/Developer/Xcode/DerivedData/reelrepplus-fwktxijuakazxyayzbnneekiezzz/Build/Intermediates.noindex/reelrepplus.build/Debug-iphonesimulator/reelrepplus.build/Script-08A4A3CD28434E44B6B9DE2E.sh (in target 'reelrepplus' from project 'reelrepplus')
+	Building project reelrepplus with scheme reelrepplus and configuration Debug
+(2 failures)
